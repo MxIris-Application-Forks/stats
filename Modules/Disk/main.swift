@@ -44,6 +44,16 @@ public struct drive: Codable {
     
     var activity: stats = stats()
     var smart: smart_t? = nil
+    
+    var percentage: Double {
+        let total = self.size
+        let free = self.free
+        var usedSpace = total - free
+        if usedSpace < 0 {
+            usedSpace = 0
+        }
+        return Double(usedSpace) / Double(total)
+    }
 }
 
 public class Disks: Codable {
@@ -160,7 +170,7 @@ public class Disks: Codable {
 
 public struct Disk_process: Process_p, Codable {
     public var base: DataSizeBase {
-        DataSizeBase(rawValue: Store.shared.string(key: "\(Disk.name)_base", defaultValue: "byte")) ?? .byte
+        DataSizeBase(rawValue: Store.shared.string(key: "\(ModuleType.disk.rawValue)_base", defaultValue: "byte")) ?? .byte
     }
     
     public var pid: Int
@@ -190,22 +200,18 @@ public struct Disk_process: Process_p, Codable {
 }
 
 public class Disk: Module {
-    public static let name: String = "Disk"
+    private let popupView: Popup = Popup(.disk)
+    private let settingsView: Settings = Settings(.disk)
+    private let portalView: Portal = Portal(.disk)
+    private let notificationsView: Notifications = Notifications(.disk)
     
-    private let popupView: Popup = Popup()
-    private let settingsView: Settings = Settings()
-    private let portalView: Portal = Portal()
-    private let notificationsView: Notifications
-    
-    private var capacityReader: CapacityReader = CapacityReader(.disk)
-    private var activityReader: ActivityReader = ActivityReader()
-    private var processReader: ProcessReader = ProcessReader(.disk)
+    private var capacityReader: CapacityReader?
+    private var activityReader: ActivityReader?
+    private var processReader: ProcessReader?
     
     private var selectedDisk: String = ""
     
     public init() {
-        self.notificationsView = Notifications(.disk)
-        
         super.init(
             popup: self.popupView,
             settings: self.settingsView,
@@ -214,52 +220,46 @@ public class Disk: Module {
         )
         guard self.available else { return }
         
-        self.selectedDisk = Store.shared.string(key: "\(Disk.name)_disk", defaultValue: self.selectedDisk)
-        
-        self.capacityReader.callbackHandler = { [weak self] value in
+        self.capacityReader = CapacityReader(.disk) { [weak self] value in
             if let value {
                 self?.capacityCallback(value)
             }
         }
-        self.capacityReader.readyCallback = { [weak self] in
-            self?.readyHandler()
-        }
-        
-        self.activityReader.callbackHandler = { [weak self] value in
+        self.activityReader = ActivityReader(.disk) { [weak self] value in
             if let value {
                 self?.activityCallback(value)
             }
         }
-        self.processReader.callbackHandler = { [weak self] value in
+        self.processReader = ProcessReader(.disk) { [weak self] value in
             if let list = value {
                 self?.popupView.processCallback(list)
             }
         }
         
+        self.selectedDisk = Store.shared.string(key: "\(ModuleType.disk.rawValue)_disk", defaultValue: self.selectedDisk)
+        
         self.settingsView.selectedDiskHandler = { [weak self] value in
             self?.selectedDisk = value
-            self?.capacityReader.read()
+            self?.capacityReader?.read()
         }
         self.settingsView.callback = { [weak self] in
-            self?.capacityReader.read()
+            self?.capacityReader?.read()
         }
         self.settingsView.setInterval = { [weak self] value in
-            self?.capacityReader.setInterval(value)
+            self?.capacityReader?.setInterval(value)
         }
         self.settingsView.callbackWhenUpdateNumberOfProcesses = { [weak self] in
             self?.popupView.numberOfProcessesUpdated()
             DispatchQueue.global(qos: .background).async {
-                self?.processReader.read()
+                self?.processReader?.read()
             }
         }
         
-        self.addReader(self.capacityReader)
-        self.addReader(self.activityReader)
-        self.addReader(self.processReader)
+        self.setReaders([self.capacityReader, self.activityReader, self.processReader])
     }
     
     public override func widgetDidSet(_ type: widget_t) {
-        if type == .speed && self.capacityReader.interval != 1 {
+        if type == .speed && self.capacityReader?.interval != 1 {
             self.settingsView.setUpdateInterval(value: 1)
         }
     }
@@ -276,25 +276,17 @@ public class Disk: Module {
             return
         }
         
-        let total = d.size
-        let free = d.free
-        var usedSpace = total - free
-        if usedSpace < 0 {
-            usedSpace = 0
-        }
-        let percentage = Double(usedSpace) / Double(total)
-        
-        self.portalView.loadCallback(percentage)
-        self.notificationsView.utilizationCallback(percentage)
+        self.portalView.utilizationCallback(d)
+        self.notificationsView.utilizationCallback(d.percentage)
         
         self.menuBar.widgets.filter{ $0.isActive }.forEach { (w: Widget) in
             switch w.item {
-            case let widget as Mini: widget.setValue(percentage)
-            case let widget as BarChart: widget.setValue([[ColorValue(percentage)]])
-            case let widget as MemoryWidget: widget.setValue((DiskSize(free).getReadableMemory(), DiskSize(usedSpace).getReadableMemory()))
+            case let widget as Mini: widget.setValue(d.percentage)
+            case let widget as BarChart: widget.setValue([[ColorValue(d.percentage)]])
+            case let widget as MemoryWidget: widget.setValue((DiskSize(d.free).getReadableMemory(), DiskSize(d.size - d.free).getReadableMemory()))
             case let widget as PieChart:
                 widget.setValue([
-                    circle_segment(value: percentage, color: NSColor.systemBlue)
+                    circle_segment(value: d.percentage, color: NSColor.systemBlue)
                 ])
             default: break
             }
@@ -302,9 +294,7 @@ public class Disk: Module {
     }
     
     private func activityCallback(_ value: Disks) {
-        guard self.enabled else {
-            return
-        }
+        guard self.enabled else { return }
         
         DispatchQueue.main.async(execute: {
             self.popupView.activityCallback(value)
@@ -313,6 +303,8 @@ public class Disk: Module {
         guard let d = value.first(where: { $0.mediaName == self.selectedDisk }) ?? value.first(where: { $0.root }) else {
             return
         }
+        
+        self.portalView.activityCallback(d)
         
         self.menuBar.widgets.filter{ $0.isActive }.forEach { (w: Widget) in
             switch w.item {

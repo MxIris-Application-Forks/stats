@@ -90,9 +90,9 @@ public class RAM: Module {
     }
     
     public init() {
-        self.settingsView = Settings("RAM")
-        self.popupView = Popup("RAM")
-        self.portalView = Portal("RAM")
+        self.settingsView = Settings(.RAM)
+        self.popupView = Popup(.RAM)
+        self.portalView = Portal(.RAM)
         self.notificationsView = Notifications(.RAM)
         
         super.init(
@@ -114,8 +114,14 @@ public class RAM: Module {
             self?.processReader?.setInterval(value)
         }
         
-        self.usageReader = UsageReader(.RAM)
-        self.processReader = ProcessReader(.RAM)
+        self.usageReader = UsageReader(.RAM) { [weak self] value in
+            self?.loadCallback(value)
+        }
+        self.processReader = ProcessReader(.RAM) { [weak self] value in
+            if let list = value {
+                self?.popupView.processCallback(list)
+            }
+        }
         
         self.settingsView.callbackWhenUpdateNumberOfProcesses = { [weak self] in
             self?.popupView.numberOfProcessesUpdated()
@@ -124,32 +130,14 @@ public class RAM: Module {
             }
         }
         
-        self.usageReader?.callbackHandler = { [weak self] value in
-            self?.loadCallback(value)
-        }
-        self.usageReader?.readyCallback = { [weak self] in
-            self?.readyHandler()
-        }
-        
-        self.processReader?.callbackHandler = { [weak self] value in
-            if let list = value {
-                self?.popupView.processCallback(list)
-            }
-        }
-        
-        if let reader = self.usageReader {
-            self.addReader(reader)
-        }
-        if let reader = self.processReader {
-            self.addReader(reader)
-        }
+        self.setReaders([self.usageReader, self.processReader])
     }
     
     private func loadCallback(_ raw: RAM_Usage?) {
         guard raw != nil, let value = raw, self.enabled else { return }
         
         self.popupView.loadCallback(value)
-        self.portalView.loadCallback(value)
+        self.portalView.callback(value)
         self.notificationsView.loadCallback(value)
         
         let total: Double = value.total == 0 ? 1 : value.total

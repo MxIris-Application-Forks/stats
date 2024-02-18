@@ -161,27 +161,16 @@ private class Popup: NSStackView, Popup_p {
         self.subviews.forEach({ $0.removeFromSuperview() })
         
         let availableModules = modules.filter({ $0.enabled && $0.portal != nil })
-        let pairs = stride(from: 0, to: availableModules.endIndex, by: 2).map {
-            (availableModules[$0], $0 < availableModules.index(before: availableModules.endIndex) ? availableModules[$0.advanced(by: 1)] : nil)
-        }
-        pairs.forEach { (m1: Module, m2: Module?) in
-            let row = NSStackView()
-            row.orientation = .horizontal
-            row.distribution = .fillEqually
-            row.spacing = Constants.Popup.spacing
-            
-            if let p = m1.portal {
-                row.addArrangedSubview(p)
+        availableModules.forEach { (m: Module) in
+            if let p = m.portal {
+                self.addArrangedSubview(p)
             }
-            if let p = m2?.portal {
-                row.addArrangedSubview(p)
-            }
-            
-            self.addArrangedSubview(row)
         }
         
-        let h = CGFloat(pairs.count) * Constants.Popup.portalHeight + (CGFloat(pairs.count)*Constants.Popup.spacing)
-        self.setFrameSize(NSSize(width: self.frame.width, height: h))
-        self.sizeCallback?(self.frame.size)
+        let h = CGFloat(availableModules.count) * Constants.Popup.portalHeight + (CGFloat(availableModules.count-1)*Constants.Popup.spacing)
+        if h > 0 {
+            self.setFrameSize(NSSize(width: self.frame.width, height: h))
+            self.sizeCallback?(self.frame.size)
+        }
     }
 }

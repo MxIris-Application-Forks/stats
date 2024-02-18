@@ -70,53 +70,17 @@ internal class Popup: PopupWrapper {
     private var maxFreq: Double = 0
     
     private var systemColorState: Color = .secondRed
-    private var systemColor: NSColor {
-        var value = NSColor.systemRed
-        if let color = self.systemColorState.additional as? NSColor {
-            value = color
-        }
-        return value
-    }
+    private var systemColor: NSColor { self.systemColorState.additional as? NSColor ?? NSColor.systemRed }
     private var userColorState: Color = .secondBlue
-    private var userColor: NSColor {
-        var value = NSColor.systemBlue
-        if let color = self.userColorState.additional as? NSColor {
-            value = color
-        }
-        return value
-    }
+    private var userColor: NSColor { self.userColorState.additional as? NSColor ?? NSColor.systemBlue }
     private var idleColorState: Color = .lightGray
-    private var idleColor: NSColor {
-        var value = NSColor.lightGray
-        if let color = self.idleColorState.additional as? NSColor {
-            value = color
-        }
-        return value
-    }
+    private var idleColor: NSColor { self.idleColorState.additional as? NSColor ?? NSColor.lightGray }
     private var chartColorState: Color = .systemAccent
-    private var chartColor: NSColor {
-        var value = NSColor.systemBlue
-        if let color = self.chartColorState.additional as? NSColor {
-            value = color
-        }
-        return value
-    }
+    private var chartColor: NSColor { self.chartColorState.additional as? NSColor ?? NSColor.systemBlue }
     private var eCoresColorState: Color = .teal
-    private var eCoresColor: NSColor {
-        var value = NSColor.systemTeal
-        if let color = self.eCoresColorState.additional as? NSColor {
-            value = color
-        }
-        return value
-    }
+    private var eCoresColor: NSColor { self.eCoresColorState.additional as? NSColor ?? NSColor.systemTeal }
     private var pCoresColorState: Color = .secondBlue
-    private var pCoresColor: NSColor {
-        var value = NSColor.systemBlue
-        if let color = self.pCoresColorState.additional as? NSColor {
-            value = color
-        }
-        return value
-    }
+    private var pCoresColor: NSColor { self.pCoresColorState.additional as? NSColor ?? NSColor.systemBlue }
     
     private var numberOfProcesses: Int {
         Store.shared.int(key: "\(self.title)_processes", defaultValue: 8)
@@ -125,8 +89,8 @@ internal class Popup: PopupWrapper {
         (self.processHeight*CGFloat(self.numberOfProcesses)) + (self.numberOfProcesses == 0 ? 0 : Constants.Popup.separatorHeight + 22)
     }
     
-    public init(_ title: String) {
-        self.title = title
+    public init(_ module: ModuleType) {
+        self.title = module.rawValue
         
         super.init(frame: NSRect(
             x: 0,
@@ -377,7 +341,9 @@ internal class Popup: PopupWrapper {
         })
     }
     
-    public func temperatureCallback(_ value: Double) {
+    public func temperatureCallback(_ value: Double?) {
+        guard let value else { return }
+        
         DispatchQueue.main.async(execute: {
             if (self.window?.isVisible ?? false) || !self.initializedTemperature {
                 if let view = self.temperatureCircle, (view as NSView).isHidden {
@@ -391,7 +357,9 @@ internal class Popup: PopupWrapper {
         })
     }
     
-    public func frequencyCallback(_ value: Double) {
+    public func frequencyCallback(_ value: Double?) {
+        guard let value else { return }
+        
         DispatchQueue.main.async(execute: {
             if let view = self.frequencyCircle, (view as NSView).isHidden {
                 view.isHidden = false
@@ -412,7 +380,9 @@ internal class Popup: PopupWrapper {
         })
     }
     
-    public func processCallback(_ list: [TopProcess]) {
+    public func processCallback(_ list: [TopProcess]?) {
+        guard let list else { return }
+        
         DispatchQueue.main.async(execute: {
             if !(self.window?.isVisible ?? false) && self.initializedProcesses {
                 return
@@ -429,7 +399,9 @@ internal class Popup: PopupWrapper {
         })
     }
     
-    public func limitCallback(_ value: CPU_Limit) {
+    public func limitCallback(_ value: CPU_Limit?) {
+        guard let value else { return }
+        
         DispatchQueue.main.async(execute: {
             if !(self.window?.isVisible ?? false) && self.initializedLimits {
                 return
@@ -442,10 +414,8 @@ internal class Popup: PopupWrapper {
         })
     }
     
-    public func averageCallback(_ value: [Double]) {
-        guard value.count == 3 else {
-            return
-        }
+    public func averageCallback(_ value: [Double]?) {
+        guard let value, value.count == 3 else { return }
         
         DispatchQueue.main.async(execute: {
             if !(self.window?.isVisible ?? false) && self.initializedAverage {
