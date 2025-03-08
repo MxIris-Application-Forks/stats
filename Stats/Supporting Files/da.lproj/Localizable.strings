@@ -75,6 +75,7 @@
 "Name" = "Navn";
 "Format" = "Format";
 "Turn off" = "Sluk";
+"Normal" = "Normal";
 "Warning" = "Warning";
 "Critical" = "Critical";
 "Usage" = "Usage";
@@ -87,6 +88,10 @@
 "Read" = "Read";
 "Write" = "Write";
 "Frequency" = "Frequency";
+"Save" = "Save";
+"Run" = "Run";
+"Stop" = "Stop";
+"Uninstall" = "Uninstall";
 
 // Setup
 "Stats Setup" = "Stats opsætning";
@@ -129,6 +134,7 @@
 "Open dashboard" = "Åben instrumentbræt";
 "No notifications available in this module" = "No notifications available in this module";
 "Open Calendar" = "Open Calendar";
+"Toggle the module" = "Toggle the module";
 
 // Application settings
 "Update application" = "Opdatér applikation";
@@ -151,6 +157,8 @@
 "Combined details" = "Combined details";
 "Spacing" = "Mellemrum";
 "Share anonymous telemetry" = "Del anonym brugsdata";
+"Choose file" = "Choose file";
+"Stress tests" = "Stress tests";
 
 // Dashboard
 "Serial number" = "Serienummer";
@@ -194,6 +202,8 @@
 "Static width" = "Statisk bredde";
 "Tachometer widget" = "Omdrejningstæller";
 "State widget" = "Status";
+"Text widget" = "Text widget";
+"Battery details widget" = "Battery details widget";
 "Show symbols" = "Vis symboler";
 "Label widget" = "Label";
 "Number of reads in the chart" = "Antal læsninger i grafen";
@@ -224,6 +234,8 @@
 "No options to configure for the popup in this module" = "Det er ikke muligt at konfigurere popup'en i dette modul";
 "Process" = "Process";
 "Kill process" = "Kill process";
+"Keyboard shortcut" = "Keyboard shortcut";
+"Listening..." = "Listening...";
 
 // Modules
 "Number of top processes" = "Antal topprocesser";
@@ -232,6 +244,7 @@
 "Chart color" = "Grafens farve";
 "Main chart scaling" = "Main chart scaling";
 "Scale value" = "Scale value";
+"Text widget value" = "Text widget value";
 
 // CPU
 "CPU usage" = "CPU brug";
@@ -325,6 +338,7 @@
 "Write speed" = "Write";
 "Read speed" = "Read";
 "Drives" = "Drives";
+"SMART data" = "SMART data";
 
 // Sensors
 "Temperature unit" = "Temperaturenhed";
@@ -390,6 +404,8 @@
 "Latency" = "Latency";
 "Upload speed" = "Upload";
 "Download speed" = "Download";
+"Address" = "Address";
+"WiFi network" = "WiFi network";
 
 // Battery
 "Level" = "Niveau";
@@ -440,6 +456,9 @@
 "Local" = "Lokalt";
 "Calendar" = "Calendar";
 "Local time" = "Local time";
+"Add new clock" = "Add new clock";
+"Delete selected clock" = "Delete selected clock";
+"Help with datetime format" = "Help with datetime format";
 
 // Colors
 "Based on utilization" = "Baseret på brug";

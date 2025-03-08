@@ -57,11 +57,13 @@
 		5C645BFF2C591F6600D8342A /* widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C645BFE2C591F6600D8342A /* widget.swift */; };
 		5C645C002C591FFA00D8342A /* Net.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A3E17CC247A94AF00449CD1 /* Net.framework */; };
 		5C645C012C591FFA00D8342A /* Net.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A3E17CC247A94AF00449CD1 /* Net.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5C6F55A72D45694400AB58ED /* notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6F55A62D45694400AB58ED /* notifications.swift */; };
 		5C7C1DF42C29A3A00060387D /* notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C1DF32C29A3A00060387D /* notifications.swift */; };
 		5C8E001029269C7F0027C75A /* protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFE493829265055000F2856 /* protocol.swift */; };
 		5CA518382B543FE600EBCCC4 /* portal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA518372B543FE600EBCCC4 /* portal.swift */; };
 		5CAA50722C8E417700B13E13 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA50712C8E417700B13E13 /* Text.swift */; };
 		5CB3878A2C35A7110030459D /* widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB387892C35A7110030459D /* widget.swift */; };
+		5CCA5CD52D4E8DB3002917F0 /* libIOReport.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C1E45552D11D66200525864 /* libIOReport.tbd */; };
 		5CD342F42B2F2FB700225631 /* notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD342F32B2F2FB700225631 /* notifications.swift */; };
 		5CE7E78C2C318512006BC92C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE7E78B2C318512006BC92C /* WidgetKit.framework */; };
 		5CE7E78E2C318512006BC92C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE7E78D2C318512006BC92C /* SwiftUI.framework */; };
@@ -539,6 +541,7 @@
 		5C5647F72A3F6B100098FFE9 /* Telemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Telemetry.swift; sourceTree = "<group>"; };
 		5C621D812B4770D6004ED7AF /* process.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = process.swift; sourceTree = "<group>"; };
 		5C645BFE2C591F6600D8342A /* widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = widget.swift; sourceTree = "<group>"; };
+		5C6F55A62D45694400AB58ED /* notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notifications.swift; sourceTree = "<group>"; };
 		5C7C1DF32C29A3A00060387D /* notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notifications.swift; sourceTree = "<group>"; };
 		5C9F90A02A76B30500D41748 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5CA518372B543FE600EBCCC4 /* portal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = portal.swift; sourceTree = "<group>"; };
@@ -842,6 +845,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CCA5CD52D4E8DB3002917F0 /* libIOReport.tbd in Frameworks */,
 				9A2847E02666AAA400EC1F6D /* Kit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1075,6 +1079,7 @@
 				9A3E17E9247B07BF00449CD1 /* popup.swift */,
 				5C23BC0B29A10BE000DBA990 /* portal.swift */,
 				9A58DEA324B3647600716A9F /* settings.swift */,
+				5C6F55A62D45694400AB58ED /* notifications.swift */,
 				5C645BFE2C591F6600D8342A /* widget.swift */,
 				9A3E17CF247A94AF00449CD1 /* Info.plist */,
 				9A3E17DC247A94C300449CD1 /* config.plist */,
@@ -2125,6 +2130,7 @@
 				5C645BFF2C591F6600D8342A /* widget.swift in Sources */,
 				9A58DEA424B3647600716A9F /* settings.swift in Sources */,
 				9A3E17D9247A94B500449CD1 /* main.swift in Sources */,
+				5C6F55A72D45694400AB58ED /* notifications.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2857,7 +2863,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.11.25;
+				MARKETING_VERSION = 2.11.33;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = eu.exelban.Stats;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2894,7 +2900,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.11.25;
+				MARKETING_VERSION = 2.11.33;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = eu.exelban.Stats;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -13,8 +13,6 @@ import Cocoa
 import Kit
 
 internal class Popup: PopupWrapper {
-    private var title: String
-    
     private var readColorState: SColor = .secondBlue
     private var readColor: NSColor { self.readColorState.additional as? NSColor ?? NSColor.systemRed }
     private var writeColorState: SColor = .secondRed
@@ -43,9 +41,7 @@ internal class Popup: PopupWrapper {
     private var lastList: [String] = []
     
     public init(_ module: ModuleType) {
-        self.title = module.rawValue
-        
-        super.init(frame: NSRect(x: 0, y: 0, width: Constants.Popup.width, height: 0))
+        super.init(module, frame: NSRect(x: 0, y: 0, width: Constants.Popup.width, height: 0))
         
         self.readColorState = SColor.fromString(Store.shared.string(key: "\(self.title)_readColor", defaultValue: self.readColorState.key))
         self.writeColorState = SColor.fromString(Store.shared.string(key: "\(self.title)_writeColor", defaultValue: self.writeColorState.key))
@@ -109,6 +105,10 @@ internal class Popup: PopupWrapper {
                 self.recalculateHeight()
             }
             self.lastList = value.array.compactMap{ $0.uuid }
+        }
+        
+        if self.settingsSection.contains("empty_view") {
+            self.settingsSection.delete("empty_view")
         }
         
         self.lastList.filter { !value.map { $0.uuid }.contains($0) }.forEach { self.settingsSection.delete($0) }
@@ -194,6 +194,13 @@ internal class Popup: PopupWrapper {
         let view = SettingsContainerView()
         
         view.addArrangedSubview(PreferencesSection([
+            PreferencesRow(localizedString("Keyboard shortcut"), component: KeyboardShartcutView(
+                callback: self.setKeyboardShortcut,
+                value: self.keyboardShortcut
+            ))
+        ]))
+        
+        view.addArrangedSubview(PreferencesSection([
             PreferencesRow(localizedString("Write color"), component: selectView(
                 action: #selector(self.toggleWriteColor),
                 items: SColor.allColors,
@@ -213,6 +220,9 @@ internal class Popup: PopupWrapper {
             ))
         ]))
         
+        let empty = NSView()
+        empty.identifier = NSUserInterfaceItemIdentifier("empty_view")
+        self.settingsSection.add(empty)
         view.addArrangedSubview(self.settingsSection)
         
         return view
@@ -284,10 +294,10 @@ internal class DiskView: NSStackView {
     }
     
     private var readColor: NSColor {
-        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.rawValue)_readColor", defaultValue: SColor.secondBlue.key)).additional as! NSColor
+        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.stringValue)_readColor", defaultValue: SColor.secondBlue.key)).additional as! NSColor
     }
     private var writeColor: NSColor {
-        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.rawValue)_writeColor", defaultValue: SColor.secondRed.key)).additional as! NSColor
+        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.stringValue)_writeColor", defaultValue: SColor.secondRed.key)).additional as! NSColor
     }
     
     init(width: CGFloat, uuid: String = "", name: String = "", size: Int64 = 1, free: Int64 = 1, path: URL? = nil, smart: smart_t? = nil, resize: @escaping () -> Void) {
@@ -408,10 +418,10 @@ internal class NameView: NSStackView {
     private var writeState: NSView? = nil
     
     private var readColor: NSColor {
-        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.rawValue)_readColor", defaultValue: SColor.secondBlue.key)).additional as! NSColor
+        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.stringValue)_readColor", defaultValue: SColor.secondBlue.key)).additional as! NSColor
     }
     private var writeColor: NSColor {
-        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.rawValue)_writeColor", defaultValue: SColor.secondRed.key)).additional as! NSColor
+        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.stringValue)_writeColor", defaultValue: SColor.secondRed.key)).additional as! NSColor
     }
     
     public init(width: CGFloat, name: String, size: Int64, free: Int64, path: URL?) {
@@ -515,13 +525,13 @@ internal class ChartView: NSStackView {
     private var ready: Bool = false
     
     private var readColor: NSColor {
-        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.rawValue)_readColor", defaultValue: SColor.secondBlue.key)).additional as! NSColor
+        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.stringValue)_readColor", defaultValue: SColor.secondBlue.key)).additional as! NSColor
     }
     private var writeColor: NSColor {
-        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.rawValue)_writeColor", defaultValue: SColor.secondRed.key)).additional as! NSColor
+        SColor.fromString(Store.shared.string(key: "\(ModuleType.disk.stringValue)_writeColor", defaultValue: SColor.secondRed.key)).additional as! NSColor
     }
     private var reverseOrder: Bool {
-        Store.shared.bool(key: "\(ModuleType.disk.rawValue)_reverseOrder", defaultValue: false)
+        Store.shared.bool(key: "\(ModuleType.disk.stringValue)_reverseOrder", defaultValue: false)
     }
     
     public init(width: CGFloat) {

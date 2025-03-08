@@ -99,7 +99,9 @@ extension AppDelegate {
         self.supportActivity.interval = 60 * 60 * 24 * 30
         self.supportActivity.repeats = true
         self.supportActivity.schedule { (completion: @escaping NSBackgroundActivityScheduler.CompletionHandler) in
-            self.checkIfShouldShowSupportWindow()
+            DispatchQueue.main.async {
+                self.checkIfShouldShowSupportWindow()
+            }
             completion(NSBackgroundActivityScheduler.Result.finished)
         }
         
@@ -201,18 +203,25 @@ extension AppDelegate {
     }
     
     func checkIfShouldShowSupportWindow() {
+        if !Store.shared.exist(key: "setupProcess") || !Store.shared.exist(key: "runAtLoginInitialized") {
+            return
+        }
+        
         let now = Int(Date().timeIntervalSince1970)
         if !Store.shared.exist(key: "support_ts") {
             Store.shared.set(key: "support_ts", value: now)
             self.supportWindow.show()
             return
         }
+        
         let lastShow = Store.shared.int(key: "support_ts", defaultValue: now)
         let diff = (now - lastShow) / (60 * 60 * 24)
         if diff <= 31 {
             debug("The support window was shown \(diff) days ago, stopping...")
             return
         }
+        
+        Store.shared.set(key: "support_ts", value: now)
         self.supportWindow.show()
     }
     
@@ -264,5 +273,26 @@ extension AppDelegate {
     
     @objc internal func openSettings() {
         NotificationCenter.default.post(name: .toggleSettings, object: nil, userInfo: ["module": "Dashboard"])
+    }
+    
+    internal func handleKeyEvent(_ event: NSEvent) {
+        var keyCodes: [UInt16] = []
+        if event.modifierFlags.contains(.control) { keyCodes.append(59) }
+        if event.modifierFlags.contains(.shift) { keyCodes.append(60) }
+        if event.modifierFlags.contains(.command) { keyCodes.append(55) }
+        if event.modifierFlags.contains(.option) { keyCodes.append(58) }
+        keyCodes.append(event.keyCode)
+        
+        guard !keyCodes.isEmpty,
+              let module = modules.first(where: { $0.enabled && $0.popupKeyboardShortcut == keyCodes }),
+              let widget = module.menuBar.widgets.filter({ $0.isActive }).first,
+              let window = widget.item.window else { return }
+        
+        NotificationCenter.default.post(name: .togglePopup, object: nil, userInfo: [
+            "module": module.name,
+            "widget": widget.type,
+            "origin": window.frame.origin,
+            "center": window.frame.width/2
+        ])
     }
 }

@@ -254,6 +254,8 @@ public class TemperatureReader: Reader<Double> {
         self.list = ["Tp1h", "Tp1t", "Tp1p", "Tp1l", "Tp01", "Tp05", "Tp09", "Tp0D", "Tp0X", "Tp0b", "Tp0f", "Tp0j"]
         case .m3, .m3Pro, .m3Max, .m3Ultra:
             self.list = ["Te05", "Te0L", "Te0P", "Te0S", "Tf04", "Tf09", "Tf0A", "Tf0B", "Tf0D", "Tf0E", "Tf44", "Tf49", "Tf4A", "Tf4B", "Tf4D", "Tf4E"]
+        case .m4, .m4Pro, .m4Max, .m4Ultra:
+            self.list = ["Te05", "Te09", "Te0H", "Te0S", "Tp01", "Tp05", "Tp09", "Tp0D", "Tp0V", "Tp0Y", "Tp0b", "Tp0e"]
         default: break
         }
     }
@@ -413,19 +415,22 @@ public class FrequencyReader: Reader<[Double]> {
     private func getSamples() async -> [([IOSample], TimeInterval)] {
         let duration = 500
         let step = UInt64(duration / self.measurementCount)
-        var prev = self.prev ?? self.getSample() ?? self.prev!
         var samples = [([IOSample], TimeInterval)]()
+        guard let initialSample = self.getSample() else { return samples }
+        var prev = self.prev ?? initialSample
         
         for _ in 0..<self.measurementCount {
             let milliseconds = UInt64(step) * 1_000_000
             try? await Task.sleep(nanoseconds: milliseconds)
+            
             guard let next = self.getSample() else { continue }
-            guard let diff = IOReportCreateSamplesDelta(prev.samples, next.samples, nil)?.takeRetainedValue() else {
-                continue
+            
+            if let diffCF = IOReportCreateSamplesDelta(prev.samples, next.samples, nil) {
+                let diff = diffCF.takeRetainedValue()
+                let elapsed = next.time - prev.time
+                samples.append((self.collectIOSamples(data: diff), max(elapsed, TimeInterval(1))))
             }
-            let elapsed = Date(timeIntervalSince1970: next.time).timeIntervalSince(Date(timeIntervalSince1970: prev.time))
             prev = next
-            samples.append((self.collectIOSamples(data: diff), max(elapsed, TimeInterval(1))))
         }
         
         self.prev = prev

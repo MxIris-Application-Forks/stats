@@ -75,8 +75,9 @@
 "Name" = "名称";
 "Format" = "格式";
 "Turn off" = "禁用";
+"Normal" = "正常";
 "Warning" = "警告";
-"Critical" = "重要通知";
+"Critical" = "严重";
 "Usage" = "用量";
 "2 minutes" = "2 分钟";
 "3 minutes" = "3 分钟";
@@ -87,6 +88,10 @@
 "Read" = "读取";
 "Write" = "写入";
 "Frequency" = "频率";
+"Save" = "保存";
+"Run" = "运行";
+"Stop" = "停止";
+"Uninstall" = "卸载";
 
 // Setup
 "Stats Setup" = "Stats 设置";
@@ -118,7 +123,7 @@
 "Successfully updated" = "更新成功";
 "Stats was updated to v" = "Stats 已更新到 v%0";
 "Reset settings text" = "应用程序的所有设置将会被重置，应用程序也将重新启动。你确定要这么做吗？";
-"Support text" = "感谢您使用 Stats！维护和改进这个开源项目需要时间和资源。如果您觉得 Stats 对您有帮助，请考虑贡献一份力量。一点一滴都有帮助！";
+"Support text" = "感谢您使用 Stats！\n\n 维护和改进这个开源项目需要花费时间和资源。您的支持能帮助我们继续给每个人提供这样免费且可靠的应用程序。\n\n如果您觉得 Stats 对您有帮助，请考虑给我们一份捐助。即使是一点一滴都有很大的帮助！";
 
 // Settings
 "Open Activity Monitor" = "打开活动监视器";
@@ -129,6 +134,7 @@
 "Open dashboard" = "打开仪表盘";
 "No notifications available in this module" = "该模块不支持通知";
 "Open Calendar" = "打开日历";
+"Toggle the module" = "切换模块显示";
 
 // Application settings
 "Update application" = "更新应用";
@@ -148,9 +154,11 @@
 "Pause the Stats" = "暂停 Stats";
 "Resume the Stats" = "恢复 Stats";
 "Combined modules" = "合并模块";
-"Combined details" = "合并细节";
+"Combined details" = "合并详情";
 "Spacing" = "间距";
 "Share anonymous telemetry" = "分享匿名诊断数据";
+"Choose file" = "选择文件";
+"Stress tests" = "压力测试";
 
 // Dashboard
 "Serial number" = "序列号";
@@ -193,7 +201,9 @@
 "Memory widget" = "容量";
 "Static width" = "固定宽度";
 "Tachometer widget" = "转速计";
-"State widget" = "状态小组件";
+"State widget" = "状态";
+"Text widget" = "文本";
+"Battery details widget" = "电池详情";
 "Show symbols" = "显示标识";
 "Label widget" = "标签";
 "Number of reads in the chart" = "图表显示的读取次数";
@@ -224,6 +234,8 @@
 "No options to configure for the popup in this module" = "该组件没有可配置的选项";
 "Process" = "进程";
 "Kill process" = "结束进程";
+"Keyboard shortcut" = "键盘快捷键";
+"Listening..." = "监听中...";
 
 // Modules
 "Number of top processes" = "高占用进程数";
@@ -232,6 +244,7 @@
 "Chart color" = "图表颜色";
 "Main chart scaling" = "主图表缩放";
 "Scale value" = "缩放值";
+"Text widget value" = "文本小组件值";
 
 // CPU
 "CPU usage" = "CPU 占用";
@@ -325,6 +338,7 @@
 "Write speed" = "写入速度";
 "Read speed" = "读取速度";
 "Drives" = "驱动器";
+"SMART data" = "SMART 数据";
 
 // Sensors
 "Temperature unit" = "温度单位";
@@ -346,7 +360,7 @@
 "Left fan" = "左侧风扇";
 "Right fan" = "右侧风扇";
 "Fastest fan" = "最高转速风扇";
-"Sensor to show" = "Sensor to show";
+"Sensor to show" = "要显示的传感器";
 
 // Network
 "Uploading" = "上传";
@@ -390,6 +404,8 @@
 "Latency" = "延迟";
 "Upload speed" = "上传速度";
 "Download speed" = "下载速度";
+"Address" = "地址";
+"WiFi network" = "WiFi 网络";
 
 // Battery
 "Level" = "电量";
@@ -429,7 +445,7 @@
 "Colorize battery" = "启用彩色电池图标";
 "Charging current" = "充电电流";
 "Charging Voltage" = "充电电压";
-"Charger state inside the battery" = "Charger state inside the battery";
+"Charger state inside the battery" = "在电池图标内显示充电器状态";
 
 // Bluetooth
 "Battery to show" = "显示的设备";
@@ -440,6 +456,9 @@
 "Local" = "本地";
 "Calendar" = "日历";
 "Local time" = "本地时间";
+"Add new clock" = "添加新时钟";
+"Delete selected clock" = "删除选定的时钟";
+"Help with datetime format" = "日期时间格式帮助";
 
 // Colors
 "Based on utilization" = "基于利用率";

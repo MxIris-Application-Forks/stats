@@ -75,6 +75,7 @@
 "Name" = "Nimi";
 "Format" = "Muoto";
 "Turn off" = "Sammuta";
+"Normal" = "Normal";
 "Warning" = "Varoitus";
 "Critical" = "Kriittinen";
 "Usage" = "Käyttö";
@@ -87,6 +88,10 @@
 "Read" = "Read";
 "Write" = "Write";
 "Frequency" = "Frequency";
+"Save" = "Save";
+"Run" = "Run";
+"Stop" = "Stop";
+"Uninstall" = "Uninstall";
 
 // Setup
 "Stats Setup" = "Stats asennus";
@@ -129,6 +134,7 @@
 "Open dashboard" = "Avaa kojelauta";
 "No notifications available in this module" = "Ei ilmoituksia tässä moduulissa";
 "Open Calendar" = "Open Calendar";
+"Toggle the module" = "Toggle the module";
 
 // Application settings
 "Update application" = "Päivitä sovellus";
@@ -151,6 +157,8 @@
 "Combined details" = "Yhdistetyt tiedot";
 "Spacing" = "Spacing";
 "Share anonymous telemetry" = "Jaa anonyymi telemetria";
+"Choose file" = "Choose file";
+"Stress tests" = "Stress tests";
 
 // Dashboard
 "Serial number" = "Sarjanumero";
@@ -194,6 +202,8 @@
 "Static width" = "Staattinen leveys";
 "Tachometer widget" = "Tachometri";
 "State widget" = "Tila";
+"Text widget" = "Text widget";
+"Battery details widget" = "Battery details widget";
 "Show symbols" = "Näytä symbolit";
 "Label widget" = "Tunniste";
 "Number of reads in the chart" = "Lukukertojen määrä kaaviossa";
@@ -224,6 +234,8 @@
 "No options to configure for the popup in this module" = "Ei muokattavia asetuksia tälle moduulille";
 "Process" = "Prosessi";
 "Kill process" = "Lopeta prosessi";
+"Keyboard shortcut" = "Keyboard shortcut";
+"Listening..." = "Listening...";
 
 // Modules
 "Number of top processes" = "Suosittujen prosessien määrä";
@@ -232,6 +244,7 @@
 "Chart color" = "Kaavion väri";
 "Main chart scaling" = "Pääkaavion skaalaus";
 "Scale value" = "Skaalausarvo";
+"Text widget value" = "Text widget value";
 
 // CPU
 "CPU usage" = "Suorittimen käyttö";
@@ -325,6 +338,7 @@
 "Write speed" = "Kirjoitusnopeus";
 "Read speed" = "Lukunopeus";
 "Drives" = "Drives";
+"SMART data" = "SMART data";
 
 // Sensors
 "Temperature unit" = "Lämpötilan yksikkö";
@@ -390,6 +404,8 @@
 "Latency" = "Viive";
 "Upload speed" = "Lähetysnopeus";
 "Download speed" = "Latausnopeus";
+"Address" = "Address";
+"WiFi network" = "WiFi network";
 
 // Battery
 "Level" = "Taso";
@@ -440,6 +456,9 @@
 "Local" = "Paikallinen";
 "Calendar" = "Kalenteri";
 "Local time" = "Paikallinen aika";
+"Add new clock" = "Add new clock";
+"Delete selected clock" = "Delete selected clock";
+"Help with datetime format" = "Help with datetime format";
 
 // Colors
 "Based on utilization" = "Perustuu käyttöasteeseen";
