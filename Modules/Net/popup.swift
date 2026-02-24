@@ -525,7 +525,12 @@ internal class Popup: PopupWrapper {
                         }
                         var ip = addr
                         if let cc = value.raddr.countryCode, !cc.isEmpty {
-                            ip += " (\(cc))"
+                            if let flag = countryFlag(cc) {
+                                ip += " \(flag)"
+                            } else {
+                                ip += " (\(cc))"
+                            }
+                            self.publicIPv4Field?.toolTip = cc
                         }
                         if self.publicIPv4Field?.stringValue != ip {
                             self.publicIPv4Field?.stringValue = ip
@@ -545,7 +550,12 @@ internal class Popup: PopupWrapper {
                         }
                         var ip = addr
                         if let cc = value.raddr.countryCode {
-                            ip += " (\(cc))"
+                            if let flag = countryFlag(cc) {
+                                ip += " \(flag)"
+                            } else {
+                                ip += " (\(cc))"
+                            }
+                            self.publicIPv6Field?.toolTip = cc
                         }
                         if self.publicIPv6Field?.stringValue != ip {
                             self.publicIPv6Field?.stringValue = ip

@@ -275,6 +275,8 @@ public class Network: Module {
                         case "private": replacement = value.laddr.v4 ?? value.laddr.v6 ?? "-"
                         case "privateV4": replacement = value.laddr.v4 ?? "-"
                         case "privateV6": replacement = value.laddr.v6 ?? "-"
+                        case "countryCode": replacement = value.raddr.countryCode ?? "-"
+                        case "flag": replacement = value.raddr.countryCode != nil ? countryFlag(value.raddr.countryCode!) : "-"
                         default: return
                         }
                     case "$interface":
