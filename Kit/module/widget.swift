@@ -324,7 +324,6 @@ public class SWidget {
     
     public func setMenuBarItem(state: Bool) {
         if state {
-            restoreNSStatusItemPosition(id: "\(self.module)_\(self.type.rawValue)")
             DispatchQueue.main.async(execute: {
                 self.menuBarItem = NSStatusBar.system.statusItem(withLength: self.item.frame.width)
                 DispatchQueue.main.async(execute: {
@@ -346,7 +345,6 @@ public class SWidget {
                 self.menuBarItem?.button?.sendAction(on: [.leftMouseDown, .rightMouseDown])
             })
         } else if let item = self.menuBarItem {
-            saveNSStatusItemPosition(id: "\(self.module)_\(self.type.rawValue)")
             NSStatusBar.system.removeStatusItem(item)
             self.menuBarItem = nil
         }
