@@ -1330,19 +1330,19 @@ public class ColumnChartView: ChartView {
     
     public override func mouseEntered(with event: NSEvent) {
         self.cursor = convert(event.locationInWindow, from: nil)
-        self.display()
+        self.needsDisplay = true
     }
     public override func mouseMoved(with event: NSEvent) {
         self.cursor = convert(event.locationInWindow, from: nil)
-        self.display()
+        self.needsDisplay = true
     }
     public override func mouseDragged(with event: NSEvent) {
         self.cursor = convert(event.locationInWindow, from: nil)
-        self.display()
+        self.needsDisplay = true
     }
     public override func mouseExited(with event: NSEvent) {
         self.cursor = nil
-        self.display()
+        self.needsDisplay = true
     }
     
     public override func updateTrackingAreas() {
